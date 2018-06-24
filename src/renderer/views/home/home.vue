@@ -25,12 +25,14 @@
         <table class="table">
             <tr>
                 <th>组合</th>
-                <th>次数</th>
+                <th>连续未中奖次数</th>
+                <th>历史（累计）未中奖次数</th>
             </tr>
             <tr v-for="(item, index) in configs" :key="index"
                 :style="{color: item.count >= 3 ? 'red' : 'currentColor', fontWeight: item.count >= 3 ? 'bold' : 0}">
                 <td>{{item.label}}</td>
                 <td>{{item.count}}</td>
+                <td>{{item.history}}</td>
             </tr>
         </table>
     </div>
@@ -49,27 +51,33 @@
         configs: [{
           label: '千百',
           pos: [0, 1],
-          count: 0
+          count: 0,
+          history: 0
         }, {
           label: '千十',
           pos: [0, 2],
-          count: 0
+          count: 0,
+          history: 0
         }, {
           label: '千个',
           pos: [0, 3],
-          count: 0
+          count: 0,
+          history: 0
         }, {
           label: '百十',
           pos: [1, 2],
-          count: 0
+          count: 0,
+          history: 0
         }, {
           label: '百个',
           pos: [1, 3],
-          count: 0
+          count: 0,
+          history: 0
         }, {
           label: '十个',
           pos: [2, 3],
-          count: 0
+          count: 0,
+          history: 0
         }]
       };
     },
@@ -94,6 +102,7 @@
           // 不相邻且不相连的情况下，就置为0
           // 相邻或者相连，则加1
           config.count = ( change === 1 || change === 0 || change === 9 ) ? config.count + 1 : 0;
+          config.history += ( change === 1 || change === 0 || change === 9 ) ? 1 : 0;
         });
       },
       tick() {
@@ -175,6 +184,12 @@
         text-align: center;
         border: 1px solid #cecece;
         padding: 5px 10px;
+    }
+
+    .table th {
+        border: 1px solid #cecece;
+        background: #c3d9ff;
+        padding: 10px;
     }
 
     .h-group {
